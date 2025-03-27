@@ -1,0 +1,20 @@
+{
+  "name": "세젤쉬 쓰기 연습",
+  "short_name": "쓰기연습",
+  "start_url": "practice.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffcc00",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
