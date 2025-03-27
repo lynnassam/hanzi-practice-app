@@ -1,4 +1,87 @@
-<!-- (기존 코드 생략) 위의 <body> 시작 전까지 동일 -->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>쓰기 연습 - 我</title>
+  <script src="https://unpkg.com/hanzi-writer@2.0.2/dist/hanzi-writer.min.js"></script>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Noto Sans', sans-serif;
+      background-color: #fff;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .char-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      gap: 20px;
+    }
+
+    .char, .pinyin, .meaning {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .pinyin {
+      color: #00aaff;
+    }
+
+    .meaning {
+      color: #e91e63;
+    }
+
+    #writer {
+      width: 210px;   /* 원래 300px → 70% */
+      height: 210px;
+      margin-top: 10px;
+    }
+
+    #message {
+      margin-top: 25px;
+      font-size: 1.3rem;
+      color: red;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      .char, .pinyin, .meaning {
+        font-size: 2.5rem;
+      }
+
+      #writer {
+        width: 180px;
+        height: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 간체자 + 병음 + 뜻 -->
+  <div class="char-group">
+    <div class="char">我</div>
+    <div class="pinyin">wǒ</div>
+    <div class="meaning">나</div>
+  </div>
+
+  <!-- 연습용 쓰기 칸 -->
+  <div id="writer"></div>
+
+  <div id="message">❌ 획 순서가 틀렸어요! 다시 시도해보세요.</div>
+
+ <!-- (기존 코드 생략) 위의 <body> 시작 전까지 동일 -->
 
   <script>
     const writer = HanziWriter.create('writer', '我', {
@@ -63,3 +146,7 @@
       setTimeout(speakWordSequence, 1000);
     };
   </script>
+
+
+</body>
+</html>
