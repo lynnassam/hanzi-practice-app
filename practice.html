@@ -43,7 +43,7 @@
     }
 
     #writer {
-      width: 210px;   /* 원래 300px → 70% */
+      width: 210px;
       height: 210px;
       margin-top: 10px;
     }
@@ -57,7 +57,7 @@
 
     @media (max-width: 480px) {
       .char, .pinyin, .meaning {
-        font-size: 2.5rem;
+        font-size: 2.3rem;
       }
 
       #writer {
@@ -76,12 +76,10 @@
     <div class="meaning">나</div>
   </div>
 
-  <!-- 연습용 쓰기 칸 -->
+  <!-- 연습용 쓰기 공간 -->
   <div id="writer"></div>
 
   <div id="message">❌ 획 순서가 틀렸어요! 다시 시도해보세요.</div>
-
- <!-- (기존 코드 생략) 위의 <body> 시작 전까지 동일 -->
 
   <script>
     const writer = HanziWriter.create('writer', '我', {
@@ -100,40 +98,52 @@
       drawingFadeDuration: 300
     });
 
-    // ✅ 음성 함수: 중국어 2번 + 한국어 1번
+    // 🗣️ 부드럽고 느린 여자 목소리로 음성 출력
     function speakWordSequence() {
       const utter1 = new SpeechSynthesisUtterance('wǒ');
       const utter2 = new SpeechSynthesisUtterance('wǒ');
       const utterKor = new SpeechSynthesisUtterance('나');
 
-      // ✅ 밝은 여자 목소리 설정
-      const voices = window.speechSynthesis.getVoices();
-      const femaleVoice = voices.find(v =>
-        v.name.includes('Google') &&
+      const voices = speechSynthesis.getVoices();
+
+      // 여자 중국어 목소리
+      const femaleChinese = voices.find(v =>
         v.lang.startsWith('zh') &&
-        v.name.toLowerCase().includes('female')
+        (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('xiaoxiao'))
       ) || voices.find(v => v.lang.startsWith('zh'));
 
-      utter1.voice = femaleVoice;
-      utter2.voice = femaleVoice;
+      // 여자 한국어 목소리
+      const koreanVoice = voices.find(v => v.lang.startsWith('ko') && v.name.toLowerCase().includes('female')) ||
+                          voices.find(v => v.lang.startsWith('ko'));
 
-      const korVoice = voices.find(v => v.lang.startsWith('ko')) || voices.find(v => v.lang.startsWith('ja'));
-      utterKor.voice = korVoice;
+      [utter1, utter2].forEach(u => {
+        u.voice = femaleChinese;
+        u.lang = 'zh-CN';
+        u.pitch = 1.2;
+        u.rate = 0.3; // 💡 느리게
+        u.volume = 1;
+      });
 
-      // 순차적으로 재생
-      window.speechSynthesis.speak(utter1);
-      setTimeout(() => window.speechSynthesis.speak(utter2), 1000);
-      setTimeout(() => window.speechSynthesis.speak(utterKor), 2500);
+      utterKor.voice = koreanVoice;
+      utterKor.lang = 'ko-KR';
+      utterKor.pitch = 1.1;
+      utterKor.rate = 0.3;
+      utterKor.volume = 1;
+
+      // 순차적으로 실행
+      speechSynthesis.speak(utter1);
+      setTimeout(() => speechSynthesis.speak(utter2), 1500);
+      setTimeout(() => speechSynthesis.speak(utterKor), 3500);
     }
 
-    // ✅ 따라 쓰기 시작 전에 음성 출력
+    // 시작과 틀렸을 때 음성 재생
     writer.quiz({
       onMistake: () => {
         document.getElementById('message').style.display = 'block';
         setTimeout(() => {
           document.getElementById('message').style.display = 'none';
           writer.quiz();
-          speakWordSequence(); // 다시 음성 출력
+          speakWordSequence();
         }, 1500);
       },
       onComplete: () => {
@@ -141,12 +151,18 @@
       }
     });
 
-    // 첫 로딩 시 음성 안내 재생
+    // 로딩 후 자동 재생
     window.onload = () => {
-      setTimeout(speakWordSequence, 1000);
+      setTimeout(() => {
+        // 음성 로딩 기다리기
+        if (speechSynthesis.getVoices().length === 0) {
+          speechSynthesis.onvoiceschanged = () => speakWordSequence();
+        } else {
+          speakWordSequence();
+        }
+      }, 1000);
     };
   </script>
-
 
 </body>
 </html>
