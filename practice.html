@@ -29,7 +29,7 @@
     }
 
     .char {
-      font-size: 3rem; /* 3배 크기 */
+      font-size: 3rem;
       font-weight: bold;
       margin-right: 20px;
     }
@@ -38,17 +38,16 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      font-size: 3rem; /* 간체자와 동일 크기 */
     }
 
     .pinyin {
-      font-size: 1.4rem;
-      color: #00aaff; /* 하늘색 */
-      margin-bottom: 6px;
+      color: #00aaff;
+      margin-bottom: 8px;
     }
 
     .meaning {
-      font-size: 1.4rem;
-      color: #e91e63; /* 진한 핑크 */
+      color: #e91e63;
     }
 
     #writer {
@@ -68,9 +67,11 @@
       .char {
         font-size: 2.5rem;
       }
-      .pinyin, .meaning {
-        font-size: 1.2rem;
+
+      .info {
+        font-size: 2.5rem;
       }
+
       #writer {
         width: 260px;
         height: 260px;
@@ -80,7 +81,7 @@
 </head>
 <body>
 
-  <!-- 위쪽 글자 + 뜻 표시 -->
+  <!-- 간체자 + 병음 + 뜻 -->
   <div class="char-group">
     <div class="char">我</div>
     <div class="info">
@@ -89,10 +90,9 @@
     </div>
   </div>
 
-  <!-- 쓰기 연습 영역 -->
+  <!-- 쓰기 영역 -->
   <div id="writer"></div>
 
-  <!-- 틀렸을 때 메시지 -->
   <div id="message">❌ 획 순서가 틀렸어요! 다시 시도해보세요.</div>
 
   <script>
@@ -107,10 +107,11 @@
       strokeFadeDuration: 0,
       delayBetweenStrokes: 0,
 
-      // 🎨 연필 질감 느낌의 색 & 굵기
-      strokeColor: '#333',     // 짙은 회색
-      strokeWidth: 6,          // 굵게
-      radicalColor: '#bbb'     // 윤곽 흐리게
+      // 3️⃣ 필기선: 부드럽고 두툼하게
+      strokeColor: '#000',      // 모든 선 검정색
+      strokeWidth: 4.2,         // 본래 글자 획 굵기 6 * 0.7 ≈ 4.2
+      drawingFadeDuration: 300, // 필기 선이 천천히 사라짐 (부드럽게)
+      drawingWidth: 4.2         // 따라 쓰는 선 굵기 (부드럽고 두툼한 느낌)
     });
 
     writer.quiz({
