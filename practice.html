@@ -6,35 +6,47 @@
   <title>쓰기 연습 - 我</title>
   <script src="https://unpkg.com/hanzi-writer@2.0.2/dist/hanzi-writer.min.js"></script>
   <style>
-    body {
-      font-family: 'Noto Sans', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+    html, body {
+      height: 100%;
       margin: 0;
-      background: #fff;
+      font-family: 'Noto Sans', sans-serif;
+      background-color: #fff;
     }
 
-    h2 {
-      font-size: 2.5rem; /* 글자 3배 키움 */
-      margin-bottom: 20px;
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .info {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .char {
+      font-size: 4rem;
+      font-weight: bold;
     }
 
     #writer {
-      width: 360px;
-      height: 360px;
+      width: 400px;
+      height: 400px;
+      margin-top: 20px;
     }
 
     #message {
       margin-top: 30px;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       color: red;
       display: none;
     }
 
     @media (max-width: 480px) {
+      .info { font-size: 1.6rem; }
+      .char { font-size: 3rem; }
       #writer {
         width: 300px;
         height: 300px;
@@ -44,23 +56,31 @@
 </head>
 <body>
 
-  <h2>我 쓰기 연습 ✍️</h2>
+  <!-- 병음 + 뜻 -->
+  <div class="info">wǒ · 나</div>
+  <!-- 글자 보여주는 박스 -->
+  <div class="char">我</div>
+
+  <!-- 쓰기 연습 영역 -->
   <div id="writer"></div>
-  <div id="message">❌ 획 순서가 틀렸어요! 다시 시도해보세요.</div>
+
+  <!-- 오답 메시지 -->
+  <div id="message">❌ 틀렸어요! 다시 시도해보세요.</div>
 
   <script>
     const writer = HanziWriter.create('writer', '我', {
-      width: 360,
-      height: 360,
+      width: 400,
+      height: 400,
       showOutline: true,
       showCharacter: false,
-      strokeAnimationSpeed: 1.2,
+      strokeAnimationSpeed: 1,
       showHintAfterMisses: 1,
       highlightOnComplete: true,
-      strokeColor: '#000',
-      radicalColor: '#aaa',
       strokeFadeDuration: 0,
-      delayBetweenStrokes: 0
+      delayBetweenStrokes: 0,
+      strokeColor: '#222',       // 어두운 회색 → 연필 느낌
+      strokeWidth: 8,            // 선 굵기: 크게
+      radicalColor: '#bbb'       // 옅은 윤곽
     });
 
     writer.quiz({
