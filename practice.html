@@ -26,24 +26,16 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 20px;
+      gap: 20px;
     }
 
-    .char {
+    .char, .pinyin, .meaning {
       font-size: 3rem;
       font-weight: bold;
-      margin-right: 20px;
-    }
-
-    .info {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      font-size: 3rem; /* 간체자와 동일 크기 */
     }
 
     .pinyin {
       color: #00aaff;
-      margin-bottom: 8px;
     }
 
     .meaning {
@@ -64,11 +56,7 @@
     }
 
     @media (max-width: 480px) {
-      .char {
-        font-size: 2.5rem;
-      }
-
-      .info {
+      .char, .pinyin, .meaning {
         font-size: 2.5rem;
       }
 
@@ -81,16 +69,14 @@
 </head>
 <body>
 
-  <!-- 간체자 + 병음 + 뜻 -->
+  <!-- 간체자 + 병음 + 뜻 한 줄로 정렬 -->
   <div class="char-group">
     <div class="char">我</div>
-    <div class="info">
-      <div class="pinyin">wǒ</div>
-      <div class="meaning">나</div>
-    </div>
+    <div class="pinyin">wǒ</div>
+    <div class="meaning">나</div>
   </div>
 
-  <!-- 쓰기 영역 -->
+  <!-- 쓰기 연습 영역 -->
   <div id="writer"></div>
 
   <div id="message">❌ 획 순서가 틀렸어요! 다시 시도해보세요.</div>
@@ -107,11 +93,11 @@
       strokeFadeDuration: 0,
       delayBetweenStrokes: 0,
 
-      // 3️⃣ 필기선: 부드럽고 두툼하게
-      strokeColor: '#000',      // 모든 선 검정색
-      strokeWidth: 4.2,         // 본래 글자 획 굵기 6 * 0.7 ≈ 4.2
-      drawingFadeDuration: 300, // 필기 선이 천천히 사라짐 (부드럽게)
-      drawingWidth: 4.2         // 따라 쓰는 선 굵기 (부드럽고 두툼한 느낌)
+      // 🎨 선 굵기와 질감 조정
+      strokeColor: '#000',
+      strokeWidth: 6,         // 본래 글자 획
+      drawingWidth: 6,        // 따라 쓰기 선 (손가락도 두툼하게!)
+      drawingFadeDuration: 300
     });
 
     writer.quiz({
