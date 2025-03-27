@@ -21,56 +21,84 @@
       text-align: center;
     }
 
-    .info {
-      font-size: 2rem;
-      margin-bottom: 10px;
+    .char-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
     }
 
     .char {
-      font-size: 4rem;
+      font-size: 3rem; /* 3배 크기 */
       font-weight: bold;
+      margin-right: 20px;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .pinyin {
+      font-size: 1.4rem;
+      color: #00aaff; /* 하늘색 */
+      margin-bottom: 6px;
+    }
+
+    .meaning {
+      font-size: 1.4rem;
+      color: #e91e63; /* 진한 핑크 */
     }
 
     #writer {
-      width: 400px;
-      height: 400px;
-      margin-top: 20px;
+      width: 300px;
+      height: 300px;
+      margin-top: 10px;
     }
 
     #message {
-      margin-top: 30px;
-      font-size: 1.8rem;
+      margin-top: 25px;
+      font-size: 1.3rem;
       color: red;
       display: none;
     }
 
     @media (max-width: 480px) {
-      .info { font-size: 1.6rem; }
-      .char { font-size: 3rem; }
+      .char {
+        font-size: 2.5rem;
+      }
+      .pinyin, .meaning {
+        font-size: 1.2rem;
+      }
       #writer {
-        width: 300px;
-        height: 300px;
+        width: 260px;
+        height: 260px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- 병음 + 뜻 -->
-  <div class="info">wǒ · 나</div>
-  <!-- 글자 보여주는 박스 -->
-  <div class="char">我</div>
+  <!-- 위쪽 글자 + 뜻 표시 -->
+  <div class="char-group">
+    <div class="char">我</div>
+    <div class="info">
+      <div class="pinyin">wǒ</div>
+      <div class="meaning">나</div>
+    </div>
+  </div>
 
   <!-- 쓰기 연습 영역 -->
   <div id="writer"></div>
 
-  <!-- 오답 메시지 -->
-  <div id="message">❌ 틀렸어요! 다시 시도해보세요.</div>
+  <!-- 틀렸을 때 메시지 -->
+  <div id="message">❌ 획 순서가 틀렸어요! 다시 시도해보세요.</div>
 
   <script>
     const writer = HanziWriter.create('writer', '我', {
-      width: 400,
-      height: 400,
+      width: 300,
+      height: 300,
       showOutline: true,
       showCharacter: false,
       strokeAnimationSpeed: 1,
@@ -78,9 +106,11 @@
       highlightOnComplete: true,
       strokeFadeDuration: 0,
       delayBetweenStrokes: 0,
-      strokeColor: '#222',       // 어두운 회색 → 연필 느낌
-      strokeWidth: 8,            // 선 굵기: 크게
-      radicalColor: '#bbb'       // 옅은 윤곽
+
+      // 🎨 연필 질감 느낌의 색 & 굵기
+      strokeColor: '#333',     // 짙은 회색
+      strokeWidth: 6,          // 굵게
+      radicalColor: '#bbb'     // 윤곽 흐리게
     });
 
     writer.quiz({
