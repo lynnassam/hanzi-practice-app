@@ -43,8 +43,8 @@
     }
 
     #writer {
-      width: 300px;
-      height: 300px;
+      width: 210px;   /* 원래 300px → 70% */
+      height: 210px;
       margin-top: 10px;
     }
 
@@ -61,30 +61,30 @@
       }
 
       #writer {
-        width: 260px;
-        height: 260px;
+        width: 180px;
+        height: 180px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- 간체자 + 병음 + 뜻 한 줄로 정렬 -->
+  <!-- 간체자 + 병음 + 뜻 -->
   <div class="char-group">
     <div class="char">我</div>
     <div class="pinyin">wǒ</div>
     <div class="meaning">나</div>
   </div>
 
-  <!-- 쓰기 연습 영역 -->
+  <!-- 연습용 쓰기 칸 -->
   <div id="writer"></div>
 
   <div id="message">❌ 획 순서가 틀렸어요! 다시 시도해보세요.</div>
 
   <script>
     const writer = HanziWriter.create('writer', '我', {
-      width: 300,
-      height: 300,
+      width: 210,
+      height: 210,
       showOutline: true,
       showCharacter: false,
       strokeAnimationSpeed: 1,
@@ -93,10 +93,9 @@
       strokeFadeDuration: 0,
       delayBetweenStrokes: 0,
 
-      // 🎨 선 굵기와 질감 조정
       strokeColor: '#000',
-      strokeWidth: 6,         // 본래 글자 획
-      drawingWidth: 6,        // 따라 쓰기 선 (손가락도 두툼하게!)
+      strokeWidth: 5.5,         // 줄어든 크기에 맞춰 적절한 굵기
+      drawingWidth: 5.5,
       drawingFadeDuration: 300
     });
 
