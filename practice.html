@@ -1,85 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>쓰기 연습 - 我</title>
-  <script src="https://unpkg.com/hanzi-writer@2.0.2/dist/hanzi-writer.min.js"></script>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: 'Noto Sans', sans-serif;
-      background-color: #fff;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    .char-group {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      gap: 20px;
-    }
-
-    .char, .pinyin, .meaning {
-      font-size: 3rem;
-      font-weight: bold;
-    }
-
-    .pinyin {
-      color: #00aaff;
-    }
-
-    .meaning {
-      color: #e91e63;
-    }
-
-    #writer {
-      width: 210px;   /* 원래 300px → 70% */
-      height: 210px;
-      margin-top: 10px;
-    }
-
-    #message {
-      margin-top: 25px;
-      font-size: 1.3rem;
-      color: red;
-      display: none;
-    }
-
-    @media (max-width: 480px) {
-      .char, .pinyin, .meaning {
-        font-size: 2.5rem;
-      }
-
-      #writer {
-        width: 180px;
-        height: 180px;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- 간체자 + 병음 + 뜻 -->
-  <div class="char-group">
-    <div class="char">我</div>
-    <div class="pinyin">wǒ</div>
-    <div class="meaning">나</div>
-  </div>
-
-  <!-- 연습용 쓰기 칸 -->
-  <div id="writer"></div>
-
-  <div id="message">❌ 획 순서가 틀렸어요! 다시 시도해보세요.</div>
+<!-- (기존 코드 생략) 위의 <body> 시작 전까지 동일 -->
 
   <script>
     const writer = HanziWriter.create('writer', '我', {
@@ -92,26 +11,55 @@
       highlightOnComplete: true,
       strokeFadeDuration: 0,
       delayBetweenStrokes: 0,
-
       strokeColor: '#000',
-      strokeWidth: 5.5,         // 줄어든 크기에 맞춰 적절한 굵기
+      strokeWidth: 5.5,
       drawingWidth: 5.5,
       drawingFadeDuration: 300
     });
 
+    // ✅ 음성 함수: 중국어 2번 + 한국어 1번
+    function speakWordSequence() {
+      const utter1 = new SpeechSynthesisUtterance('wǒ');
+      const utter2 = new SpeechSynthesisUtterance('wǒ');
+      const utterKor = new SpeechSynthesisUtterance('나');
+
+      // ✅ 밝은 여자 목소리 설정
+      const voices = window.speechSynthesis.getVoices();
+      const femaleVoice = voices.find(v =>
+        v.name.includes('Google') &&
+        v.lang.startsWith('zh') &&
+        v.name.toLowerCase().includes('female')
+      ) || voices.find(v => v.lang.startsWith('zh'));
+
+      utter1.voice = femaleVoice;
+      utter2.voice = femaleVoice;
+
+      const korVoice = voices.find(v => v.lang.startsWith('ko')) || voices.find(v => v.lang.startsWith('ja'));
+      utterKor.voice = korVoice;
+
+      // 순차적으로 재생
+      window.speechSynthesis.speak(utter1);
+      setTimeout(() => window.speechSynthesis.speak(utter2), 1000);
+      setTimeout(() => window.speechSynthesis.speak(utterKor), 2500);
+    }
+
+    // ✅ 따라 쓰기 시작 전에 음성 출력
     writer.quiz({
       onMistake: () => {
         document.getElementById('message').style.display = 'block';
         setTimeout(() => {
           document.getElementById('message').style.display = 'none';
-          writer.quiz(); // 다시 시작
+          writer.quiz();
+          speakWordSequence(); // 다시 음성 출력
         }, 1500);
       },
       onComplete: () => {
         alert('✅ 완성! 너무 잘했어요!');
       }
     });
-  </script>
 
-</body>
-</html>
+    // 첫 로딩 시 음성 안내 재생
+    window.onload = () => {
+      setTimeout(speakWordSequence, 1000);
+    };
+  </script>
