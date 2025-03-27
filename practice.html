@@ -2,30 +2,78 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>쓰기 연습 - 我</title>
   <script src="https://unpkg.com/hanzi-writer@2.0.2/dist/hanzi-writer.min.js"></script>
   <style>
-    body { text-align: center; font-family: sans-serif; margin-top: 30px; }
-    #writer { width: 300px; height: 300px; margin: 0 auto; }
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #fff;
+    }
+
+    h2 {
+      font-size: 2.5rem; /* 글자 3배 키움 */
+      margin-bottom: 20px;
+    }
+
+    #writer {
+      width: 360px;
+      height: 360px;
+    }
+
+    #message {
+      margin-top: 30px;
+      font-size: 1.5rem;
+      color: red;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      #writer {
+        width: 300px;
+        height: 300px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <h2>我 쓰기 연습</h2>
+  <h2>我 쓰기 연습 ✍️</h2>
   <div id="writer"></div>
+  <div id="message">❌ 획 순서가 틀렸어요! 다시 시도해보세요.</div>
 
   <script>
     const writer = HanziWriter.create('writer', '我', {
-      width: 300,
-      height: 300,
+      width: 360,
+      height: 360,
       showOutline: true,
       showCharacter: false,
-      strokeAnimationSpeed: 1,
+      strokeAnimationSpeed: 1.2,
+      showHintAfterMisses: 1,
+      highlightOnComplete: true,
+      strokeColor: '#000',
+      radicalColor: '#aaa',
+      strokeFadeDuration: 0,
+      delayBetweenStrokes: 0
     });
 
     writer.quiz({
-      onMistake: () => alert('❌ 틀렸어요! 다시 시도해보세요.'),
-      onComplete: () => alert('✅ 완성! 잘했어요!')
+      onMistake: () => {
+        document.getElementById('message').style.display = 'block';
+        setTimeout(() => {
+          document.getElementById('message').style.display = 'none';
+          writer.quiz(); // 다시 시작
+        }, 1500);
+      },
+      onComplete: () => {
+        alert('✅ 완성! 너무 잘했어요!');
+      }
     });
   </script>
 
